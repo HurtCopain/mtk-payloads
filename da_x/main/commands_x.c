@@ -20,18 +20,23 @@ int cmd_readmem(com_channel_struct *channel){
     channel->read((uint8_t*)&length,&cmdlen);
     if (length>0x20000) length=0x20000;
     memcpy(buffer,(volatile uint64_t*)addr,length);
-    return channel->write((uint8_t *)buffer,length);
+    channel->write((uint8_t *)buffer,length);
+    return 0;
 }
 
 int cmd_readregister(com_channel_struct *channel){
+    int status = 0;
     volatile uint32_t addr=0;
     volatile uint32_t dword=0;
     uint32_t cmdlen=4;
     channel->read((uint8_t*)&addr,&cmdlen);
+    channel->write((uint8_t*)&status, 4);
+
     cmdlen=4;
     dword=WRAP_RD32(addr);
     //dword=*(volatile uint32_t*)addr;
-    return channel->write((uint8_t *)&dword,cmdlen);
+    channel->write((uint8_t *)&dword,cmdlen);
+    return 0;
 }
 
 int cmd_writemem(com_channel_struct *channel){
@@ -179,12 +184,10 @@ int cmd_sej_aes(com_channel_struct *channel)
 
     if (length > AES_MAX_LEN) {
         status = 0xc0010004;
-        channel->write((uint8_t*)&status, 4);
         return status;
     }
 
     channel->read(data_in, &length);
-
     channel->write((uint8_t*)&status, 4);
 
     if (encrypt)
@@ -193,7 +196,6 @@ int cmd_sej_aes(com_channel_struct *channel)
         sp_sej_dec(data_in, data_out, length, anti_clone, legacy);
 
     channel->write(data_out, length);
-    channel->write((uint8_t*)&status, 4);
 
     return status;
 }
