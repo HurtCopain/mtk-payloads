@@ -1,5 +1,6 @@
 DIRS=(
     "da_x"
+    "extloader"
 )
 
 CURRENT_DIR=$(pwd)
