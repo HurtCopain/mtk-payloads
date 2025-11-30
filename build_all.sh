@@ -1,6 +1,7 @@
 DIRS=(
     "da_x"
     "extloader"
+    "secpatcher"
 )
 
 CURRENT_DIR=$(pwd)
