@@ -9,6 +9,10 @@
 
 extern volatile uint32_t hacc_base;
 
+static inline volatile uint32_t* SEJ_REG(uint32_t offset) {
+    return (volatile uint32_t*)((uintptr_t)hacc_base + offset);
+}
+
 #define SEJ_CG                      (0x1 << 10)
 
 #define HACC_AES_TEST_SRC            (0x02000000)
@@ -20,43 +24,43 @@ extern volatile uint32_t hacc_base;
 #define HACC_CFG_2                    (0x66975412)	/* CHECKME */
 #define HACC_CFG_3                    (0x5a5a3257)	/* CHECKME */
 
-#define SEJ_CON                     (hacc_base+0x0000)
-#define SEJ_ACON                    (hacc_base+0x0004)
-#define SEJ_ACON2                   (hacc_base+0x0008)
-#define SEJ_ACONK                   (hacc_base+0x000C)
-#define SEJ_ASRC0                   (hacc_base+0x0010)
-#define SEJ_ASRC1                   (hacc_base+0x0014)
-#define SEJ_ASRC2                   (hacc_base+0x0018)
-#define SEJ_ASRC3                   (hacc_base+0x001C)
-#define SEJ_AKEY0                   (hacc_base+0x0020)
-#define SEJ_AKEY1                   (hacc_base+0x0024)
-#define SEJ_AKEY2                   (hacc_base+0x0028)
-#define SEJ_AKEY3                   (hacc_base+0x002C)
-#define SEJ_AKEY4                   (hacc_base+0x0030)
-#define SEJ_AKEY5                   (hacc_base+0x0034)
-#define SEJ_AKEY6                   (hacc_base+0x0038)
-#define SEJ_AKEY7                   (hacc_base+0x003C)
-#define SEJ_ACFG0                   (hacc_base+0x0040)
-#define SEJ_ACFG1                   (hacc_base+0x0044)
-#define SEJ_ACFG2                   (hacc_base+0x0048)
-#define SEJ_ACFG3                   (hacc_base+0x004c)
-#define SEJ_AOUT0                   (hacc_base+0x0050)
-#define SEJ_AOUT1                   (hacc_base+0x0054)
-#define SEJ_AOUT2                   (hacc_base+0x0058)
-#define SEJ_AOUT3                   (hacc_base+0x005C)
-#define SEJ_SW_OTP0                 (hacc_base+0x0060)
-#define SEJ_SW_OTP1                 (hacc_base+0x0064)
-#define SEJ_SW_OTP2                 (hacc_base+0x0068)
-#define SEJ_SW_OTP3                 (hacc_base+0x006c)
-#define SEJ_SW_OTP4                 (hacc_base+0x0070)
-#define SEJ_SW_OTP5                 (hacc_base+0x0074)
-#define SEJ_SW_OTP6                 (hacc_base+0x0078)
-#define SEJ_SW_OTP7                 (hacc_base+0x007c)
-#define SEJ_SECINIT0                (hacc_base+0x0080)
-#define SEJ_SECINIT1                (hacc_base+0x0084)
-#define SEJ_SECINIT2                (hacc_base+0x0088)
-#define SEJ_MKJ                     (hacc_base+0x00a0)
-#define SEJ_UNK                     (hacc_base+0x00bc)
+#define SEJ_CON                     SEJ_REG(0x0000)
+#define SEJ_ACON                    SEJ_REG(0x0004)
+#define SEJ_ACON2                   SEJ_REG(0x0008)
+#define SEJ_ACONK                   SEJ_REG(0x000C)
+#define SEJ_ASRC0                   SEJ_REG(0x0010)
+#define SEJ_ASRC1                   SEJ_REG(0x0014)
+#define SEJ_ASRC2                   SEJ_REG(0x0018)
+#define SEJ_ASRC3                   SEJ_REG(0x001C)
+#define SEJ_AKEY0                   SEJ_REG(0x0020)
+#define SEJ_AKEY1                   SEJ_REG(0x0024)
+#define SEJ_AKEY2                   SEJ_REG(0x0028)
+#define SEJ_AKEY3                   SEJ_REG(0x002C)
+#define SEJ_AKEY4                   SEJ_REG(0x0030)
+#define SEJ_AKEY5                   SEJ_REG(0x0034)
+#define SEJ_AKEY6                   SEJ_REG(0x0038)
+#define SEJ_AKEY7                   SEJ_REG(0x003C)
+#define SEJ_ACFG0                   SEJ_REG(0x0040)
+#define SEJ_ACFG1                   SEJ_REG(0x0044)
+#define SEJ_ACFG2                   SEJ_REG(0x0048)
+#define SEJ_ACFG3                   SEJ_REG(0x004c)
+#define SEJ_AOUT0                   SEJ_REG(0x0050)
+#define SEJ_AOUT1                   SEJ_REG(0x0054)
+#define SEJ_AOUT2                   SEJ_REG(0x0058)
+#define SEJ_AOUT3                   SEJ_REG(0x005C)
+#define SEJ_SW_OTP0                 SEJ_REG(0x0060)
+#define SEJ_SW_OTP1                 SEJ_REG(0x0064)
+#define SEJ_SW_OTP2                 SEJ_REG(0x0068)
+#define SEJ_SW_OTP3                 SEJ_REG(0x006c)
+#define SEJ_SW_OTP4                 SEJ_REG(0x0070)
+#define SEJ_SW_OTP5                 SEJ_REG(0x0074)
+#define SEJ_SW_OTP6                 SEJ_REG(0x0078)
+#define SEJ_SW_OTP7                 SEJ_REG(0x007c)
+#define SEJ_SECINIT0                SEJ_REG(0x0080)
+#define SEJ_SECINIT1                SEJ_REG(0x0084)
+#define SEJ_SECINIT2                SEJ_REG(0x0088)
+#define SEJ_MKJ                     SEJ_REG(0x00a0)
+#define SEJ_UNK                     SEJ_REG(0x00bc)
 
 /* AES */
 #define SEJ_AES_DEC                 0x00000000
@@ -197,5 +201,7 @@ uint32_t sej_set_mode(AES_MODE mode);
 int sp_sej_enc(uint8_t* buf, uint8_t* out, uint32_t size, bool anti_clone, bool legacy);
 int sp_sej_dec(uint8_t* buf, uint8_t* out, uint32_t size, bool anti_clone, bool legacy);
 void init_sej_ctx(void);
+void set_sej_base(uint32_t base_addr);
+uint32_t get_sej_base(void);
 
 #endif // SEJ_H

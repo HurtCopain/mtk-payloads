@@ -369,3 +369,11 @@ void init_sej_ctx(void) {
     g_sej_ctx.blk_sz = 16;
     g_sej_ctx.use_custom_iv = false;
 }
+
+void set_sej_base(uint32_t base_addr) {
+    hacc_base = base_addr;
+}
+
+uint32_t get_sej_base(void) {
+    return hacc_base;
+}
