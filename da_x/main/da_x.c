@@ -35,6 +35,7 @@ __attribute__ ((section(".text.main"))) int main() {
     register_major_command(0xF0009,(void*)cmd_rpmb_read);
     register_major_command(0xF000A,(void*)cmd_rpmb_write);
     register_major_command(0xF000B,(void*)cmd_sej_aes);
+    register_major_command(0xF000C,(void*)cmd_setup_da_ctx);
     cache_close(1);
     return 0;
 }
