@@ -55,7 +55,7 @@ int32_t toSigned32(uint32_t n){
     return n | (-(n & 0x80000000));
 }
 
-static uint32_t get_world_clock_value(){
+static uint32_t get_world_clock_value(void){
     return INREG32(0x10017008);
 }
 
