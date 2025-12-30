@@ -21,6 +21,7 @@
           pkgs.python3
           pkgs.gnumake
           frostix.gcc-toolchain.gcc-arm-linux-gnueabihf-12
+          frostix.gcc-toolchain.gcc-aarch64-linux-gnu
         ];
 
         shellHook = ''
