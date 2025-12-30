@@ -1,6 +1,6 @@
-## DA V5 ext loader
+## DA ext loader
 
-This directory contains a small payload that can be used to add back the boot_to cmd to V5 Download Agents that have it removed (2024+).
+This directory contains a small payload that can be used to add back the boot_to cmd to V5 Download Agents that have it removed (2024+), and V6 loaders.
 
 ### Building
 
