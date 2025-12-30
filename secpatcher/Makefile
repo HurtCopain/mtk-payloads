@@ -19,7 +19,7 @@ OUT_BIN := $(OUTDIR)/secpatcher.bin
 CFLAGS := -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf \
           -fno-strict-aliasing -fno-builtin-memcpy -fPIE -mno-unaligned-access \
           -Wall -Wextra
-LDFLAGS := -nodefaultlibs -nostdlib -Wl,--build-id=none
+LDFLAGS := -nodefaultlibs -nostdlib -Wl,--build-id=none,--no-warn-rwx-segments
 
 ifeq ($(DEBUG),1)
 CFLAGS += -DDEBUG -g
