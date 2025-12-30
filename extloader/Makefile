@@ -8,12 +8,12 @@ BUILD_DIR := build
 TARGET    := build/extloader
 OUTPUT := ../payloads/extloader
 
-SRC := main.c
-OBJ := $(BUILD_DIR)/main.o
+SRC := v5.c
+OBJ := $(BUILD_DIR)/v5.o
 
 CFLAGS := -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf -fno-strict-aliasing
 CFLAGS += -fno-builtin-memcpy -mno-unaligned-access -DPRINTF_DISABLE_SUPPORT_FLOAT=1 -fPIE
-LDFLAGS := -T linker.x -nodefaultlibs -nostdlib
+LDFLAGS := -T linker.x -nodefaultlibs -nostdlib -Wl,--no-warn-rwx-segments
 
 ifeq ($(DEBUG),1)
 CFLAGS += -DDEBUG
