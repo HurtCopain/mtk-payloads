@@ -17,7 +17,7 @@ struct com_channel_struct {
     int (*log_to_uart)(const uint8_t* buffer, uint32_t length);
 };
 
-int (*download)(struct com_channel_struct*, const char*, char**, uint32_t*, const char*) = (void*)0x40027720;
+int (*download)(struct com_channel_struct*, const char*, char**, uint32_t*, const char*) = (const void*)0x11111111;
 
 __attribute__((section(".text.start"))) int cmd_boot_to(struct com_channel_struct* channel, const char* xml) {
     int status = STATUS_OK;
