@@ -1,0 +1,139 @@
+/*
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2026 Shomy
+ */
+
+#include <stddef.h>
+#include <protocol_functions.h>
+#include <commands.h>
+#include <sej.h>
+
+int cb_opaque(void*) {
+    return 2;
+}
+
+#define CB_OPAQUE cb_opaque
+
+
+int cmd_ack(struct com_channel_struct *channel, const char*) {
+    int status = STATUS_OK;
+    const char *target_file = "ack.xml";
+    const char* ack_xml = "<?xml version=\"1.0\" "
+                            "encoding=\"UTF-8\"?>"
+                            "<ack>"
+                            "<status>OK</status>"
+                            "</ack>";
+
+    size_t xml_len = strlen(ack_xml);
+    status = upload(channel, target_file, ack_xml, (uint32_t)xml_len, "ACK");
+
+    printf("DA Extension ACK sent\n");
+
+    return status;
+}
+
+int cmd_readmem(struct com_channel_struct *channel, const char* xml) {
+    int status = STATUS_OK;
+    const char *target_file = "readmem.bin";
+    void *tree;
+    uintptr_t address;
+    u32 length;
+
+    MXML_LOAD(tree, xml, CB_OPAQUE, "da/arg/address", "da/arg/length", NULL);
+
+    address = atoull(mxmlGetNodeText(tree, "da/arg/address"));
+    length = atoull(mxmlGetNodeText(tree, "da/arg/length"));
+
+    printf("ReadMem: address=0x%08lx length=0x%08x\n", address, length);
+
+    status = upload(channel, target_file, (const char*)address, length, "memory read");
+
+    MXMLDELETE(tree);
+    return status;
+}
+
+int cmd_writemem(struct com_channel_struct *channel, const char* xml) {
+    int status = STATUS_OK;
+    const char *source_file = "writemem.bin";
+    void *tree;
+    char *address;
+    uint32_t length;
+
+    MXML_LOAD(tree, xml, CB_OPAQUE, "da/arg/address", "da/arg/length", NULL);
+
+    address = (char *)(uintptr_t)atoull(mxmlGetNodeText(tree, "da/arg/address"));
+    length = atoull(mxmlGetNodeText(tree, "da/arg/length"));
+
+    printf("WriteMem: address=0x%08lx length=0x%08x\n", (uintptr_t)address, length);
+
+    status = download(channel, source_file, &address, &length, "memory write");
+
+    MXMLDELETE(tree);
+    return status;
+}
+
+int cmd_sej_aes(struct com_channel_struct *channel, const char* xml) {
+    #define AES_MAX_LEN 4096
+    int status = STATUS_OK;
+    const char *source_file = "sej_aes.bin";
+    void *tree;
+    uint32_t data_length;
+    bool anti_clone;
+    bool encrypt;
+    bool legacy;
+
+    MXML_LOAD(tree, xml, CB_OPAQUE, "da/arg/encrypt", "da/arg/legacy", "da/arg/ac", "da/arg/length", NULL);
+
+    encrypt = (strcmp(mxmlGetNodeText(tree, "da/arg/encrypt"), "yes") == 0);
+    legacy  = (strcmp(mxmlGetNodeText(tree, "da/arg/legacy"), "yes") == 0);
+    anti_clone = (strcmp(mxmlGetNodeText(tree, "da/arg/ac"), "yes") == 0);
+    data_length = atoull(mxmlGetNodeText(tree, "da/arg/length"));
+
+    if (data_length > AES_MAX_LEN) {
+        status = STATUS_ERR;
+        printf("SEJ AES: Data length too large: 0x%08x\n", data_length);
+        goto end;
+    }
+
+    uint32_t buf_size = data_length + 16;
+    void* data_buf = malloc(buf_size);
+    if (!data_buf) {
+        status = STATUS_ERR;
+        printf("SEJ AES: Failed to allocate data buffer\n");
+        goto end;
+    }
+
+    status = download(channel, source_file, (char**)&data_buf, &buf_size, "SEJ AES data");
+    if (status != STATUS_OK) {
+        goto free;
+    }
+
+    if (encrypt)
+        sp_sej_enc(data_buf, data_buf, data_length, anti_clone, legacy);
+    else
+        sp_sej_dec(data_buf, data_buf, data_length, anti_clone, legacy);
+
+    status = upload(channel, source_file, (const char*)data_buf, data_length, "SEJ AES result");
+
+free:
+    free(data_buf);
+end:
+    MXMLDELETE(tree);
+    return status;
+}
+
+int cmd_set_sej_base(struct com_channel_struct*, const char* xml) {
+    int status = STATUS_OK;
+    void *tree;
+    uintptr_t sej_base;
+
+    MXML_LOAD(tree, xml, CB_OPAQUE, "da/arg/sej_base", NULL);
+
+    sej_base = atoull(mxmlGetNodeText(tree, "da/arg/sej_base"));
+
+    printf("Set SEJ Base: 0x%08lx\n", sej_base);
+    set_sej_base(sej_base);
+
+    MXMLDELETE(tree);
+    return status;
+}

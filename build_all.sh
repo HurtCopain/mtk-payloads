@@ -2,6 +2,7 @@
 
 DIRS=(
     da_x
+    da_xml
     extloader
     secpatcher
 )
