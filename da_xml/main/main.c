@@ -8,6 +8,10 @@
 #include <sej.h>
 #include <protocol_functions.h>
 #include <commands.h>
+#include <nanoprintf.h>
+
+extern char log_buf[128];
+uintptr_t da_start = 0x11111111;
 
 void register_commands(void) {
     const char *ver1 = "1";
@@ -20,13 +24,6 @@ void register_commands(void) {
 }
 
 __attribute__ ((section(".text.main"))) int main(void) {
-    uintptr_t start = 0x40000000;
-    uintptr_t end = start + 0x80000; // 512 KB range
-    if (find_functions(start, end)) {
-        // We could not find the functions we need, so we quit.
-        return 0;
-    }
-
     // BANNER TIME!!!
     printf("\n");
     printf("*********************");

@@ -7,6 +7,7 @@
 #include <protocol_functions.h>
 #include <commands.h>
 #include <sej.h>
+#include <nanoprintf.h>
 
 int cb_opaque(void*) {
     return 2;
@@ -14,18 +15,33 @@ int cb_opaque(void*) {
 
 #define CB_OPAQUE cb_opaque
 
-
 int cmd_ack(struct com_channel_struct *channel, const char*) {
     int status = STATUS_OK;
     const char *target_file = "ack.xml";
-    const char* ack_xml = "<?xml version=\"1.0\" "
-                            "encoding=\"UTF-8\"?>"
-                            "<ack>"
-                            "<status>OK</status>"
-                            "</ack>";
+    char ack_xml[512];
 
-    size_t xml_len = strlen(ack_xml);
-    status = upload(channel, target_file, ack_xml, (uint32_t)xml_len, "ACK");
+    int len = npf_snprintf(ack_xml, sizeof(ack_xml),
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        "<ack>"
+        "<status>OK</status>"
+        "<register_major_command>0x%08x</register_major_command>"
+        "<download>0x%08x</download>"
+        "<upload>0x%08x</upload>"
+        "<malloc>0x%08x</malloc>"
+        "<free>0x%08x</free>"
+        "<mxmlGetNodeText>0x%08x</mxmlGetNodeText>"
+        "<mxmlLoadString>0x%08x</mxmlLoadString>"
+        "</ack>",
+        (unsigned int)(uintptr_t)register_major_command,
+        (unsigned int)(uintptr_t)download,
+        (unsigned int)(uintptr_t)upload,
+        (unsigned int)(uintptr_t)malloc,
+        (unsigned int)(uintptr_t)free,
+        (unsigned int)(uintptr_t)mxmlGetNodeText,
+        (unsigned int)(uintptr_t)mxmlLoadString
+    );
+
+    status = upload(channel, target_file, ack_xml, (uint32_t)len, "ACK");
 
     printf("DA Extension ACK sent\n");
 

@@ -81,6 +81,4 @@ extern int (*dprintf)(const char *fmt, ...);
 extern char *(*mxmlGetNodeText)(void* /* tree */, const char* /* path */);
 extern void *(*mxmlLoadString)(void*, const char*, void* /* callback */); // OPAQUE = 2
 
-bool find_functions(uintptr_t start, uintptr_t end);
-
 #endif //DA_XML_PROTOCOL_FUNCTIONS_H
