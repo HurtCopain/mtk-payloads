@@ -4,7 +4,7 @@ This directory contains DA Extensions for V6/XML  devices, allowing to define cu
 
 ### Supported cmds
 
-- `CMD:EXT-ACK` - used to aknowledge wether da extensions got loaded
+- `CMD:EXT-ACK` - used to aknowledge whether da extensions got loaded or not
 - `CMD:EXT-SEJ` - used to interact with SEJ for performing cryptological operations (AES)
 - `CMD:EXT-SET-SEJ-BASE` - used to set the SEJ base address, which may vary between devices
 - `CMD:EXT-READ-MEM` - used to read memory from device
