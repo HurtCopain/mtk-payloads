@@ -42,7 +42,7 @@ CFLAGS      += -fno-omit-frame-pointer -fno-pic -fno-pie
 CFLAGS      += -I$(INC_DIR) -I$(LIB_DIR) -I$(LIBSEJ_DIR)/include
 CFLAGS      += $(ARCH_DEFINE)
 
-LDFLAGS     := -nodefaultlibs -nostdlib --build-id=none,
+LDFLAGS     := -nodefaultlibs -nostdlib -Wl,--build-id=none
 LDFLAGS     += -T$(LINKER_SCR) -L$(BUILD_DIR)
 
 ifeq ($(ARCH),aarch64)

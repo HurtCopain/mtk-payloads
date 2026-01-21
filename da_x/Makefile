@@ -31,7 +31,7 @@ CFLAGS := -fno-pic -fno-plt -fno-stack-protector -static  -fno-plt  -fno-stack-p
 CFLAGS += -I../libsej/include
 
 ASMFLAGS := $(CFLAGS)
-LDFLAGS := -nodefaultlibs -nostdlib --build-id=none -Tmain/generic.ld -L$(BUILD_DIR)
+LDFLAGS := -nodefaultlibs -nostdlib -Wl,--build-id=none -Tmain/generic.ld -L$(BUILD_DIR)
 
 OBJECTS := $(patsubst %.c,$(BUILD_DIR)/%.o,$(C_SOURCES)) \
            $(patsubst %.S,$(BUILD_DIR)/%.o,$(ASM_SOURCES))
