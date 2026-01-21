@@ -19,7 +19,7 @@
 
 #include <nanoprintf.h>
 
-void uart_putc(int ch, void* /* ctx */) {
+void uart_putc(int ch, void* ctx) {
     if (ch == '\n')
         mtk_uart_putc('\r');
     mtk_uart_putc(ch);

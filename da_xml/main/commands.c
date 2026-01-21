@@ -9,13 +9,13 @@
 #include <sej.h>
 #include <nanoprintf.h>
 
-int cb_opaque(void*) {
+int cb_opaque(void* unused){
     return 2;
 }
 
 #define CB_OPAQUE cb_opaque
 
-int cmd_ack(struct com_channel_struct *channel, const char*) {
+int cmd_ack(struct com_channel_struct *channel, const char* unused) {
     int status = STATUS_OK;
     const char *target_file = "ack.xml";
     char ack_xml[512];
@@ -138,7 +138,7 @@ end:
     return status;
 }
 
-int cmd_set_sej_base(struct com_channel_struct*, const char* xml) {
+int cmd_set_sej_base(struct com_channel_struct* unused, const char* xml) {
     int status = STATUS_OK;
     void *tree;
     uintptr_t sej_base;

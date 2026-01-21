@@ -1,3 +1,4 @@
+CFLAGS += -fno-pic -fno-plt -fno-stack-protector -fno-stack-check -ffreestanding
 CROSS_COMPILE ?= arm-none-eabi-
 
 CC := $(CROSS_COMPILE)gcc
@@ -16,10 +17,10 @@ OUTDIR := ../payloads
 OUT_ELF := $(BUILDDIR)/secpatcher.elf
 OUT_BIN := $(OUTDIR)/secpatcher.bin
 
-CFLAGS := -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf \
+CFLAGS := -fno-pic -fno-plt -fno-stack-protector -static  -fno-plt  -fno-stack-protector -fno-stack-check -U_FORTIFY_SOURCE  -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf \
           -fno-strict-aliasing -fno-builtin-memcpy -fPIE -mno-unaligned-access \
           -Wall -Wextra
-LDFLAGS := -nodefaultlibs -nostdlib -Wl,--build-id=none,--no-warn-rwx-segments
+LDFLAGS := -nodefaultlibs -nostdlib --build-id=none,
 
 ifeq ($(DEBUG),1)
 CFLAGS += -DDEBUG -g

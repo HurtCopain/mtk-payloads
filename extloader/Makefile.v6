@@ -1,3 +1,4 @@
+CFLAGS += -fno-pic -fno-plt -fno-stack-protector -fno-stack-check -ffreestanding
 CROSS_COMPILE    ?= arm-none-eabi-
 CROSS_COMPILE_64 ?= aarch64-none-linux-gnu-
 
@@ -15,15 +16,16 @@ SRC       := v6.c
 OUT_ARM   := ../payloads/extloaderv6_arm
 OUT_ARM64 := ../payloads/extloaderv6_arm64
 
-COMMON_CFLAGS := -std=gnu99 -Os -fPIE \
+COMMON_CFLAGS := -fno-pic -fno-plt -fno-stack-protector -static  -fno-pic -fno-plt -fno-stack-protector -static  -fno-pic -fno-plt -fno-stack-protector -static  -fno-pic -fno-plt -fno-stack-protector  -fno-pic -fno-plt -static -fno-stack-protector  -fno-pic -fno-plt  -fno-plt  -fno-stack-protector -fno-stack-check -U_FORTIFY_SOURCE  -std=gnu99 -Os -fPIE \
 	-fno-builtin-printf -fno-builtin-memcpy \
 	-fno-strict-aliasing -DPRINTF_DISABLE_SUPPORT_FLOAT=1
 
 CFLAGS_ARM   := $(COMMON_CFLAGS) -marm -mcpu=cortex-a9 -mno-unaligned-access
 CFLAGS_ARM64 := $(COMMON_CFLAGS) -march=armv8-a -mcmodel=tiny
 
-LDFLAGS_ARM   := -T linker.x -nodefaultlibs -nostdlib -Wl,--no-warn-rwx-segments
-LDFLAGS_ARM64 := -T linker64.x -nodefaultlibs -nostdlib -Wl,--no-warn-rwx-segments
+LDFLAGS_ARM   := -T linker.x -nodefaultlibs -nostdlib
+LDFLAGS_ARM64 := -T linker64.x -nostdlib -nodefaultlibs -static
+LDFLAGS := -static -nostdlib
 
 ifeq ($(DEBUG),1)
 CFLAGS_ARM   += -DDEBUG

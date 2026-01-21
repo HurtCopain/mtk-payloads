@@ -1,3 +1,4 @@
+CFLAGS += -fno-pic -fno-plt -fno-stack-protector -fno-stack-check -ffreestanding
 CROSS_COMPILE ?= arm-none-eabi-
 
 CC      := $(CROSS_COMPILE)gcc
@@ -11,9 +12,9 @@ OUTPUT := ../payloads/extloader
 SRC := v5.c
 OBJ := $(BUILD_DIR)/v5.o
 
-CFLAGS := -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf -fno-strict-aliasing
+CFLAGS := -fno-pic -fno-plt -fno-stack-protector -static  -fno-plt  -fno-stack-protector -fno-stack-check -U_FORTIFY_SOURCE  -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf -fno-strict-aliasing
 CFLAGS += -fno-builtin-memcpy -mno-unaligned-access -DPRINTF_DISABLE_SUPPORT_FLOAT=1 -fPIE
-LDFLAGS := -T linker.x -nodefaultlibs -nostdlib -Wl,--no-warn-rwx-segments
+LDFLAGS := -T linker.x -nodefaultlibs -nostdlib
 
 ifeq ($(DEBUG),1)
 CFLAGS += -DDEBUG

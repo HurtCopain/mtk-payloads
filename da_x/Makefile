@@ -1,3 +1,4 @@
+CFLAGS += -fno-pic -fno-plt -fno-stack-protector -fno-stack-check -ffreestanding
 CROSS_COMPILE_LINUX ?= arm-none-linux-gnueabihf-
 
 CC      := $(CROSS_COMPILE_LINUX)gcc
@@ -21,15 +22,16 @@ TARGET_ELF := $(BUILD_DIR)/da_x.elf
 TARGET_BIN := $(OUTPUT_DIR)/da_x.bin
 
 # Flags
-CFLAGS := -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf \
+CFLAGS := -fno-pic -fno-plt -fno-stack-protector -static  -fno-plt  -fno-stack-protector -fno-stack-check -U_FORTIFY_SOURCE  -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf \
           -fno-strict-aliasing -fno-builtin-memcpy -fno-stack-protector \
           -fPIE -Wall -Wextra -z noexecstack -DV5 \
-          -I$(INCLUDE_DIR)
+          -I$(INCLUDE_DIR) \
+          -fno-stack-protector -U_FORTIFY_SOURCE
 
 CFLAGS += -I../libsej/include
 
 ASMFLAGS := $(CFLAGS)
-LDFLAGS := -nodefaultlibs -nostdlib -Wl,--build-id=none -Tmain/generic.ld -L$(BUILD_DIR)
+LDFLAGS := -nodefaultlibs -nostdlib --build-id=none -Tmain/generic.ld -L$(BUILD_DIR)
 
 OBJECTS := $(patsubst %.c,$(BUILD_DIR)/%.o,$(C_SOURCES)) \
            $(patsubst %.S,$(BUILD_DIR)/%.o,$(ASM_SOURCES))

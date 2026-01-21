@@ -1,3 +1,4 @@
+CFLAGS += -fno-pic -fno-plt -fno-stack-protector -fno-stack-check -ffreestanding
 ARCH ?= arm
 
 ifeq ($(ARCH),aarch64)
@@ -41,7 +42,7 @@ CFLAGS      += -fno-omit-frame-pointer -fno-pic -fno-pie
 CFLAGS      += -I$(INC_DIR) -I$(LIB_DIR) -I$(LIBSEJ_DIR)/include
 CFLAGS      += $(ARCH_DEFINE)
 
-LDFLAGS     := -nodefaultlibs -nostdlib -Wl,--build-id=none,--no-warn-rwx-segments
+LDFLAGS     := -nodefaultlibs -nostdlib --build-id=none,
 LDFLAGS     += -T$(LINKER_SCR) -L$(BUILD_DIR)
 
 ifeq ($(ARCH),aarch64)
