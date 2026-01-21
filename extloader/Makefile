@@ -12,7 +12,7 @@ OUTPUT := ../payloads/extloader
 SRC := v5.c
 OBJ := $(BUILD_DIR)/v5.o
 
-CFLAGS := -fno-pic -fno-plt -fno-stack-protector -static  -fno-plt  -fno-stack-protector -fno-stack-check -U_FORTIFY_SOURCE  -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf -fno-strict-aliasing
+CFLAGS := -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -U_FORTIFY_SOURCE  -fno-pic -fno-plt -fno-stack-protector -static  -fno-plt  -fno-stack-protector -fno-stack-check -U_FORTIFY_SOURCE  -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf -fno-strict-aliasing
 CFLAGS += -fno-builtin-memcpy -mno-unaligned-access -DPRINTF_DISABLE_SUPPORT_FLOAT=1 -fPIE
 LDFLAGS := -T linker.x -nodefaultlibs -nostdlib
 

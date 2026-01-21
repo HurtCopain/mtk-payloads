@@ -17,7 +17,7 @@ OUTDIR := ../payloads
 OUT_ELF := $(BUILDDIR)/secpatcher.elf
 OUT_BIN := $(OUTDIR)/secpatcher.bin
 
-CFLAGS := -fno-pic -fno-plt -fno-stack-protector -static  -fno-plt  -fno-stack-protector -fno-stack-check -U_FORTIFY_SOURCE  -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf \
+CFLAGS := -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -U_FORTIFY_SOURCE  -fno-pic -fno-plt -fno-stack-protector -static  -fno-plt  -fno-stack-protector -fno-stack-check -U_FORTIFY_SOURCE  -std=gnu99 -Os -mthumb -mcpu=cortex-a9 -fno-builtin-printf \
           -fno-strict-aliasing -fno-builtin-memcpy -fPIE -mno-unaligned-access \
           -Wall -Wextra
 LDFLAGS := -nodefaultlibs -nostdlib -Wl,--build-id=none

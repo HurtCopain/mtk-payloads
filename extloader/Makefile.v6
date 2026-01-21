@@ -16,7 +16,7 @@ SRC       := v6.c
 OUT_ARM   := ../payloads/extloaderv6_arm
 OUT_ARM64 := ../payloads/extloaderv6_arm64
 
-COMMON_CFLAGS := -fno-pic -fno-plt -fno-stack-protector -static  -fno-pic -fno-plt -fno-stack-protector -static  -fno-pic -fno-plt -fno-stack-protector -static  -fno-pic -fno-plt -fno-stack-protector  -fno-pic -fno-plt -static -fno-stack-protector  -fno-pic -fno-plt  -fno-plt  -fno-stack-protector -fno-stack-check -U_FORTIFY_SOURCE  -std=gnu99 -Os -fPIE \
+COMMON_CFLAGS := -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -U_FORTIFY_SOURCE  -fno-pic -fno-plt -fno-stack-protector -static  -fno-pic -fno-plt -fno-stack-protector -static  -fno-pic -fno-plt -fno-stack-protector -static  -fno-pic -fno-plt -fno-stack-protector  -fno-pic -fno-plt -static -fno-stack-protector  -fno-pic -fno-plt  -fno-plt  -fno-stack-protector -fno-stack-check -U_FORTIFY_SOURCE  -std=gnu99 -Os -fPIE \
 	-fno-builtin-printf -fno-builtin-memcpy \
 	-fno-strict-aliasing -DPRINTF_DISABLE_SUPPORT_FLOAT=1
 
